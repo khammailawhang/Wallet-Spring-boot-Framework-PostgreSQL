@@ -1,108 +1,62 @@
 # 🚀 Spring Boot Core Wallet API v1.0
 
-ລະບົບຈຳລອງກະເປົາເງິນອິເລັກທຣອນິກ (Core Wallet System) ພັດທະນາດ້ວຍ **Spring Boot (v4.2.0-M2)** ແລະ ເຊື່ອມຕໍ່ຖານຂໍ້ມູນ **PostgreSQL** ແບບມີສະຖຽນລະພາບ ແລະ ຄວາມປອດໄພສູງ ຕາມຫຼັກການ **RESTful APIs** [໑].
+ລະບົບຈຳລອງກະເປົາເງິນອິເລັກທຣອນິກ (Core Wallet System) ພັດທະນາດ້ວຍ Spring Boot ແລະ ເຊື່ອມຕໍ່ຖານຂໍ້ມູນ PostgreSQL ແບບມີສະຖຽນລະພາບ ແລະ ຄວາມປອດໄພສູງ ຕາມຫຼັກການ RESTful APIs [໑].
 
 ---
 
 ## 🛠️ ຟີເຈີຫຼັກຂອງລະບົບ (Core Features)
 
-* 🔍 **Check Balance (`GET`)**: ກວດສອບຍອດເງິນຫຼ້າສຸດຂອງຜູ້ໃຊ້ ດຶງຂໍ້ມູນຈິງຈາກ PostgreSQL [໑].
-* 💵 **Deposit (`POST`)**: ລະບົບຝາກເງິນ/ເຕີມເງິນເຂົ້າກະເປົາ ພ້ອມບັນທຶກປະຫວັດທຸລະກຳ.
-* 💸 **Secure Transfer (`POST`)**: ລະບົບໂອນເງິນລະຫວ່າງບຸກຄົນ ພ້ອມກົນໄກຄວາມປອດໄພ `@Transactional` (ຕັດເງິນຜູ້ໂອນ ແລະ ເພີ່ມເງິນຜູ້ຮັບ ພ້ອມກັນ ຫາກມີບາງຢ່າງຜິດພາດຈະດຶງເງິນຄືນ/Rollback ທັນທີ).
-* 📊 **Transaction History (`GET`)**: ດຶງປະຫວັດການເຮັດທຸລະກຳການເງິນ (Ledger History) ທັງໝົດ ໂດຍລຽງຈາກໃໝ່ຫາເກົ່າ [໑].
+### 1. 🔍 ກວດສອບຍອດເງິນ (Check Balance)
+ລະບົບສາມາດກວດສອບຍອດເງິນຫຼ້າສຸດຂອງຜູ້ໃຊ້ ໂດຍດຶງຂໍ້ມູນຈິງຈາກຖານຂໍ້ມູນ PostgreSQL ແບບ Real-time [໑].
+
+### 2. 💵 ຝາກເງິນ/ເຕີມເງິນ (Deposit)
+ລະບົບຮອງຮັບການຝາກເງິນ ຫຼື ເຕີມເງິນເຂົ້າກະເປົາເງິນຂອງຕົນເອງ ພ້ອມທັງບັນທຶກປະຫວັດການເຮັດທຸລະກຳລົງໃນລະບົບອັດຕະໂນມັດ.
+
+### 3. 💸 ໂອນເງິນແບບປອດໄພ (Secure Transfer)
+ລະບົບໂອນເງິນລະຫວ່າງບຸກຄົນ ພ້ອມກົນໄກຄວາມປອດໄພສູງ ຫາກມີຂັ້ນຕອນໃດໜຶ່ງຜິດພາດ ລະບົບຈະດຶງເງິນຄືນ (Rollback) ທັນທີ ເພື່ອປ້ອງກັນຂໍ້ມູນເສຍຫາຍ.
+
+### 4. 📊 ປະຫວັດການເຮັດທຸລະກຳ (Transaction History)
+ລະບົບສາມາດດຶງປະຫວັດການເຮັດທຸລະກຳການເງິນ (Ledger History) ທັງໝົດຂອງຜູ້ໃຊ້ອອກມາສະແດງ ໂດຍຮຽງລຳດັບຈາກລາຍການໃໝ່ລົງໄປຫາລາຍການເກົ່າ [໑].
 
 ---
 
 ## 🗄️ ໂຄງສ້າງຖານຂໍ້ມູນ (Database Schema)
 
-ໂຄງສ້າງຕາຕະລາງໃນ **PostgreSQL (`wallat_db_java`)** ທີ່ຖືກສ້າງຂຶ້ນອັດຕະໂນມັດຜ່ານ Hibernate ORM:
+ໂຄງສ້າງຕາຕະລາງໃນ PostgreSQL ທີ່ໃຊ້ງານໃນລະບົບ ແບ່ງອອກເປັນ 3 ຕາຕະລາງຫຼັກດັ່ງນີ້:
 
-### 1. ຕາຕະລາງ `wallets`
-* `wallet_id` (PK, Serial): ໄອດີກະເປົາເງິນ
-* `user_id` (VARCHAR, Unique): ໄອດີຜູ້ໃຊ້ (ເຊື່ອມໂຍງກັບຕາຕະລາງ users)
-* `balance` (NUMERIC): ຍອດເງິນຄົງເຫຼືອ (ໃຊ້ NUMERIC ເພື່ອປ້ອງກັນທົດສະນິຍົມຄາດເຄື່ອນໃນລະບົບການເງິນ)
-* `currency` (VARCHAR): ສະກຸນເງິນ (Default: 'LAK')
+### 1. ຕາຕະລາງເກັບຂໍ້ມູນຜູ້ໃຊ້ (Users Table)
+*ສ້າງໂດຍນັກພັດທະນາ (Manual)*: ເຮັດໜ້າທີ່ເກັບຂໍ້ມູນພື້ນຖານຂອງຜູ້ໃຊ້ ເຊັ່ນ: ໄອດີຜູ້ໃຊ້ (user_id), ຊື່ຜູ້ໃຊ້ (username), ແລະ ອີເມວ (email) ເພື່ອໃຊ້ເປັນຫຼັກໃນການຜູກກວດສອບຕົວຕົນ.
 
-### 2. ຕາຕະລາງ `wallet_transactions` (Ledger)
-* `transaction_id` (PK, Serial): ໄອດີປະຫວັດ
-* `wallet_id` (FK): ຜູກກັບກະເປົາເງິນ
-* `transaction_type` (VARCHAR): ປະເພດທຸລະກຳ (`DEPOSIT`, `TRANSFER_IN`, `TRANSFER_OUT`)
-* `amount` (NUMERIC): ຈຳນວນເງິນ
-* `description` (TEXT): ລາຍລະອຽດການໂອນ
-* `created_at` (TIMESTAMP): ວັນທີ ແລະ ເວລາຈິງທີ່ເກີດທຸລະກຳ
+### 2. ຕາຕະລາງເກັບຍອດເງິນ (Wallets Table)
+*ສ້າງອັດຕະໂນມັດຜ່ານ Hibernate*: ເຮັດໜ້າທີ່ເກັບຂໍ້ມູນໄອດີກະເປົາເງິນ, ໄອດີຜູ້ໃຊ້, ຍອດເງິນຄົງເຫຼືອ ແລະ ສະກຸນເງິນ ໂດຍໃຊ້ປະເພດຕົວເລກພິເສດເພື່ອປ້ອງກັນທົດສະນິຍົມຄາດເຄື່ອນໃນລະບົບການເງິນ.
+
+### 3. ຕາຕະລາງເກັບປະຫວັດ (Wallet Transactions Table)
+*ສ້າງອັດຕະໂນມັດຜ່ານ Hibernate*: ເຮັດໜ້າທີ່ເກັບປະຫວັດລາຍການເງິນເຂົ້າ-ອອກທັງໝົດ ໂດຍບັນທຶກໄອດີປະຫວັດ, ປະເພດທຸລະກຳ (DEPOSIT, TRANSFER_IN, TRANSFER_OUT), ຈຳນວນເງິນ, ລາຍລະອຽດ, ວັນທີ ແລະ ເວລາຈິງທີ່ເກີດທຸລະກຳ.
 
 ---
 
-## 🔌 ລາຍລະອຽດ API Endpoints (RESTful Documentation)
+## 🔌 ເສັ້ນທາງການເຊື່ອມຕໍ່ API Endpoints
 
-### 1. ກວດສອບຍອດເງິນ (Check Balance)
-* **URL:** `/api/wallet/{userId}`
-* **Method:** `GET`
-* **Response 200 OK:**
-```json
-{
-    "userId": "userA",
-    "balance": 500.0,
-    "currency": "LAK",
-    "walletId": 5
-}
-```
+ລະບົບຮອງຮັບການຮັບ-ສົ່ງຂໍ້ມູນໃນຮູບແບບ JSON ຜ່ານເສັ້ນທາງ Endpoints ດັ່ງນີ້:
 
-### 2. ຝາກເງິນ/ເຕີມເງິນ (Deposit)
-* **URL:** `/api/wallet/deposit`
-* **Method:** `POST`
-* **Headers:** `Content-Type: application/json`
-* **Request Body (JSON):**
-```json
-{
-    "userId": "userA",
-    "amount": 1000.0
-}
-```
-
-### 3. ໂອນເງິນແບບປອດໄພ (Secure Transfer)
-* **URL:** `/api/wallet/transfer`
-* **Method:** `POST`
-* **Headers:** `Content-Type: application/json`
-* **Request Body (JSON):**
-```json
-{
-    "fromUserId": "userA",
-    "toUserId": "userB",
-    "amount": 200.0
-}
-```
-
-### 4. ດຶງປະຫວັດການເງິນ (Transaction History)
-* **URL:** `/api/wallet/{userId}/transactions`
-* **Method:** `GET`
-* **Response 200 OK:**
-```json
-[
-    {
-        "walletId": 5,
-        "transactionType": "TRANSFER_OUT",
-        "amount": 200.00,
-        "description": "ໂອນໄປຫາ userB",
-        "createdAt": "2026-09-26T17:05:42.240822",
-        "transactionId": 2
-    }
-]
-```
+* 🔍 **Method GET**: `/api/wallet/{userId}` (ສຳລັບກວດສອບຍອດເງິນ) [໑]
+* 💵 **Method POST**: `/api/wallet/deposit` (ສຳລັບຝາກເງິນ/ເຕີມເງິນ)
+* 💸 **Method POST**: `/api/wallet/transfer` (ສຳລັບໂອນເງິນແບບປອດໄພ)
+* 📊 **Method GET**: `/api/wallet/{userId}/transactions` (ສຳລັບດຶງປະຫວັດການເງິນ) [໑]
 
 ---
 
 ## 🔒 ລະບົບຄວາມປອດໄພຂອງ Config (Secrets Management)
 
-ໂຄງການນີ້ມີການນຳໃຊ້ **Environment Variables** ພາຍໃຕ້ໄຟລ໌ `.gitignore` ເພື່ອປົກປ້ອງຄວາມລັບຂອງລະບົບ:
-* ໄຟລ໌ `application.properties` ຖືກໃສ່ໄວ້ໃນ `.gitignore` ເພື່ອ **ປ້ອງກັນບໍ່ໃຫ້ລະຫັດຜ່ານຖານຂໍ້ມູນຮົ່ວໄຫຼຂຶ້ນ GitHub** [໑].
-* ລະຫັດຜ່ານຖານຂໍ້ມູນຖືກເອີ້ນໃຊ້ຜ່ານຕົວແປ `${DB_PASSWORD}` [໑].
+ໂຄງການນີ້ມີການນຳໃຊ້ຕົວແປສະພາບແວດລ້ອມ ພາຍໃຕ້ການຄວບຄຸມຂອງໄຟລ໌ `.gitignore` ເພື່ອປົກປ້ອງຄວາມລັບຂອງລະບົບ:
+* ໄຟລ໌ຕັ້ງຄ່າຫຼັກຖືກໃສ່ໄວ້ໃນ `.gitignore` ເພື່ອປ້ອງກັນບໍ່ໃຫ້ລະຫັດຜ່ານຖານຂໍ້ມູນຮົ່ວໄຫຼຂຶ້ນ GitHub [໑].
+* ລະຫັດຜ່ານຖານຂໍ້ມູນຖືກເອີ້ນໃຊ້ຜ່ານຕົວແປລະບົບ ເຮັດໃຫ້ໂຄ້ດປອດໄພ ແລະ ຍ້າຍ Server ໄດ້ງ່າຍ [໑].
 
 ---
 
 ## 🚀 ວິທີການ Run ໂຄງການ (How to Run)
 
-1. ສ້າງ Database ຫວ່າງເປົ່າໃນ PostgreSQL ຊື່ວ່າ `wallat_db_java`.
-2. ຕັ້ງຄ່າ Environment Variable ຢູ່ໃນ IDE ຂອງເຈົ້າ: `DB_PASSWORD = <ລຫັດຜ່ານ_database_ຂອງເຈົ້າ>`.
-3. ກົດ Run ໄຟລ໌ `DemoApplication.java` ຜ່ານ IntelliJ IDEA.
-4. ຕົວໂຄງການຈະເປີດໃຊ້ງານຢູ່ທີ່ `http://localhost:8080`. ເປີດ **Postman** ເພື່ອຍິງທົດສອບໄດ້ທັນທີ!
+* **ຂັ້ນຕອນທີ 1**: ສ້າງ Database ຫວ່າງເປົ່າໃນ PostgreSQL ໃຫ້ຮຽບຮ້ອຍ.
+* **...ຂັ້ນຕອນທີ 2**: ຕັ້ງຄ່າ Environment Variable ລະຫັດຜ່ານ Database ຢູ່ໃນ IDE ຂອງເຈົ້າ.
+* **ຂັ້ນຕອນທີ 3**: ກົດ Run ໂຄງການ Spring Boot ຜ່ານ IntelliJ IDEA.
+* **ຂັ້ນຕອນທີ 4**: ເປີດໂປຣແກຣມ Postman ເພື່ອຍິງທົດສອບ API ຕາມເສັ້ນທາງ Endpoints ທີ່ກຳນົດໄວ້.
