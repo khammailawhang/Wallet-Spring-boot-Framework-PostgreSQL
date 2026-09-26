@@ -1,0 +1,20 @@
+# 1. ປົກປ້ອງໄຟລ໌ຕັ້ງຄ່າ ແລະ ຄວາມລັບຕ່າງໆ
+/src/main/resources/application.properties
+/src/main/resources/application-*.properties
+*.env
+*.local
+
+# 2. ປິດການເອົາໂຟນເດີ Build/Compile ຂຶ້ນ (ເພາະມັນໜັກ ແລະ ຖານຂໍ້ມູນສ້າງໃໝ່ໄດ້)
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+/build/
+
+# 3. ປິດການເອົາໄຟລ໌ຕັ້ງຄ່າສ່ວນຕົວຂອງ IDE ຂຶ້ນ (ເຊັ່ນ IntelliJ, Eclipse)
+/.idea/
+/*.iml
+/out/
+.DS_Store
+/HELP.md
+
+# 4. ໄຟລ໌ Log ຕ່າງໆ ທີ່ເກີດຂຶ້ນຕອນ Run ລະບົບ
+*.log
