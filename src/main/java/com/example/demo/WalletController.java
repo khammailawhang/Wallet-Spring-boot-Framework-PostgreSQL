@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo; // ແຖວທີ 1
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,10 +28,10 @@ public class WalletController {
                 });
     }
 
-    // 2. API ໂອນເງິນ
+    // 2. API ໂອນເງິນ (ລຶບ @RequestBody ອອກແລ້ວເພື່ອໃຫ້ຮອງຮັບ HTML Form)
     @PostMapping("/transfer")
     @Transactional
-    public String transferMoney(@RequestBody TransferRequest request) {
+    public String transferMoney(TransferRequest request) {
         Wallet fromWallet = walletRepository.findByUserId(request.getFromUserId()).orElse(null);
         Wallet toWallet = walletRepository.findByUserId(request.getToUserId()).orElse(null);
 
@@ -71,11 +71,10 @@ public class WalletController {
         return transactionRepository.findByWalletIdOrderByCreatedAtDesc(wallet.getWalletId());
     }
 
-    // 🌟 4. API ໃໝ່: ຝາກເງິນ (Deposit) ເຂົ້າກະເປົາ
+    // 4. API ຝາກເງິນ (ລຶບ @RequestBody ອອກແລ້ວເພື່ອໃຫ້ຮອງຮັບ HTML Form)
     @PostMapping("/deposit")
     @Transactional
-    public String depositMoney(@RequestBody DepositRequest request) {
-        // ຄົ້ນຫາ Wallet ຂອງ User ຈາກ PostgreSQL
+    public String depositMoney(DepositRequest request) {
         Wallet wallet = walletRepository.findByUserId(request.getUserId()).orElse(null);
 
         if (wallet == null) {
@@ -84,16 +83,13 @@ public class WalletController {
 
         BigDecimal depositAmount = BigDecimal.valueOf(request.getAmount());
 
-        // ກວດສອບວ່າຈຳນວນເງິນຕ້ອງຫຼາຍກວ່າ 0
         if (depositAmount.compareTo(BigDecimal.ZERO) <= 0) {
             return "ຜິດພາດ: ຈຳນວນເງິນຝາກຕ້ອງຫຼາຍກວ່າ 0 ກີບ!";
         }
 
-        // ເພີ່ມຍອດເງິນເຂົ້າ Wallet
         wallet.setBalance(wallet.getBalance().add(depositAmount));
         walletRepository.save(wallet);
 
-        // ບັນທຶກປະຫວັດການຝາກເງິນ (DEPOSIT) ລົງ Ledger
         transactionRepository.save(new WalletTransaction(
                 wallet.getWalletId(), "DEPOSIT", depositAmount, "ຝາກເງິນເຂົ້າກະເປົາອັດຕະໂນມັດ"
         ));

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wallet Dashboard</title>
+    <!-- ວິທີດຶງໄຟລ໌ CSS ມາໃຊ້ແບບ Thymeleaf -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <!-- th:text ຈະເອົາຂໍ້ມູນຈາກ Backend ມາສະແດງ -->
+    <h1 th:text="${message}">ຂໍ້ຄວາມເລີ່ມຕົ້ນ</h1>
+    <p>ຍິນດີຕ້ອນຮັບເຂົ້າສູ່ລະບົບ Wallet API Full-stack!</p>
+</div>
+</body>
+</html>

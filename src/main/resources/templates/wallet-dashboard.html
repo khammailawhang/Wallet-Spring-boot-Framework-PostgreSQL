@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Wallet UI Dashboard</title>
+    <!-- ດຶງ Bootstrap 5 CSS ມາຕົບແຕ່ງ -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+    <!-- ດຶງ Bootstrap Icons ມາຊ່ວຍເພີ່ມຄວາມງາມໃຫ້ປຸ່ມ ແລະ ຫົວຂໍ້ -->
+    <link href="https://jsdelivr.net" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+
+            <!-- ສ່ວນຫົວ ແລະ ປ່ຽນ User -->
+            <div class="d-flex justify-content-between align-items-center mb-4 bg-white p-3 rounded shadow-sm border-start border-primary border-4">
+                <h2 class="text-primary mb-0 fw-bold"><i class="bi bi-wallet2 me-2"></i>💰 E-Wallet API Dashboard</h2>
+                <form method="get" th:action="@{/wallet}" class="d-flex gap-2">
+                    <select name="userId" class="form-select fw-bold border-primary" onchange="this.form.submit()">
+                        <option value="userA" th:selected="${userId == 'userA'}">User A (ຄຳ)</option>
+                        <option value="userB" th:selected="${userId == 'userB'}">User B (ສອນ)</option>
+                    </select>
+                </form>
+            </div>
+
+            <!-- ກ່ອງ Alert ສະແດງຂໍ້ຄວາມ: ປ່ຽນສີຕາມປະເພດຜົນລັອບອັດຕະໂນມັດ -->
+            <div th:if="${messageAlert}"
+                 th:class="${#strings.contains(messageAlert, 'ຜິດພາດ')} ? 'alert alert-danger text-center fw-bold shadow-sm' : 'alert alert-success text-center fw-bold shadow-sm'"
+                 th:text="${messageAlert}">
+            </div>
+
+            <div class="row g-4">
+                <!-- ຝັ່ງຊ້າຍ: ສະແດງຍອດເງິນ ແລະ ຟອມເຮັດທຸລະກຳ -->
+                <div class="col-md-5">
+                    <!-- Card ສະແດງຍອດເງິນ (ຕົບແຕ່ງໃຫ້ຫຼູຫຼາຂຶ້ນ) -->
+                    <div class="card text-white bg-gradient mb-4 shadow" style="background: linear-gradient(135deg, #1d976c, #93f9b9);">
+                        <div class="card-body p-4">
+                            <h5 class="card-title text-white-50"><i class="bi bi-person-circle me-1"></i> ຍອດເງິນໃນກະເປົາຂອງ <span class="fw-bold text-white" th:text="${userId}"></span></h5>
+                            <h1 class="card-text fw-extrabold mt-2"><span th:text="${#numbers.formatDecimal(balance, 1, 'COMMA', 2, 'POINT')}">0.00</span> <small style="font-size: 20px;">ກີບ</small></h1>
+                        </div>
+                    </div>
+
+                    <!-- ຟອມຝາກເງິນ -->
+                    <div class="card mb-4 shadow-sm border-0">
+                        <div class="card-header bg-dark text-white fw-bold"><i class="bi bi-cash-coin me-2 text-success"></i>💵 ຝາກເງິນ (Deposit)</div>
+                        <div class="card-body bg-white rounded-bottom">
+                            <form th:action="@{/wallet/web-deposit}" method="post">
+                                <input type="hidden" name="userId" th:value="${userId}">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold text-secondary">ຈຳນວນເງິນຝາກ (ກີບ)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light fw-bold text-success">₭</span>
+                                        <input type="number" step="any" name="amount" class="form-control form-control-lg" placeholder="0.00" required>
+                                    </div>
+                                </div>
+                                <!-- ✨ ຕົບແຕ່ງປຸ່ມ: ເພີ່ມ Effects shadow ແລະ ຕົວໜັງສືໃຫຍ່ຂຶ້ນ -->
+                                <button type="submit" class="btn btn-success btn-lg w-100 fw-bold shadow-sm"><i class="bi bi-plus-circle me-2"></i>ຢືນຢັນການຝາກເງິນ</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- ຟອມໂອນເງິນ -->
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-dark text-white fw-bold"><i class="bi bi-send me-2 text-primary"></i>💸 ໂອນເງິນ (Transfer)</div>
+                        <div class="card-body bg-white rounded-bottom">
+                            <form th:action="@{/wallet/web-transfer}" method="post">
+                                <input type="hidden" name="fromUserId" th:value="${userId}">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold text-secondary">ໂອນໄປຫາ User ID</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light"><i class="bi bi-person-fill"></i></span>
+                                        <input type="text" name="toUserId" class="form-control" placeholder="userB" required>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold text-secondary">ຈຳນວນເງິນໂອນ (ກີບ)</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text bg-light fw-bold text-primary">₭</span>
+                                        <input type="number" step="any" name="amount" class="form-control" placeholder="0.00" required>
+                                    </div>
+                                </div>
+                                <!-- ✨ ຕົບແຕ່ງປຸ່ມ: ປຸ່ມໂອນເງິນເປັນສີຟ້າພ້ອມ Icon ສົ່ງເງິນ -->
+                                <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm"><i class="bi bi-arrow-right-circle me-2"></i>ຢືນຢັນການໂອນເງິນ</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ຝັ່ງຂວາ: ຕາຕະລາງປະຫວັດທຸລະກຳ (ໃສ່ສີແຖວຕາມເງື່ອນໄຂ) -->
+                <div class="col-md-7">
+                    <div class="card shadow-sm h-100 border-0">
+                        <div class="card-header bg-secondary text-white fw-bold"><i class="bi bi-clock-history me-2"></i>📜 ປະຫວັດການເຮັດທຸລະກຳ (Ledger)</div>
+                        <div class="card-body p-0 bg-white rounded-bottom">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-dark">
+                                    <tr>
+                                        <th style="width: 25%;">ປະເພດ</th>
+                                        <th style="width: 35%;">ຈຳນວນເງິນ</th>
+                                        <th style="width: 40%;">ລາຍລະອຽດ</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!-- ✨ ໃສ່ສີແຖວຕາຕະລາງ (Table Row Coloring):
+                                         - ຖ້າເປັນ DEPOSIT ຫຼື TRANSFER_IN ຈະເພີ່ມ Class 'table-success' (ສີຂຽວອ່ອນ)
+                                         - ຖ້າເປັນ TRANSFER_OUT ຈະເພີ່ມ Class 'table-danger' (ສີແດງອ່ອນ) -->
+                                    <tr th:each="tx : ${transactions}"
+                                        th:classappend="${tx.transactionType == 'DEPOSIT' || tx.transactionType == 'TRANSFER_IN'} ? 'table-success-subtle table-success' : 'table-danger-subtle table-danger'">
+                                        <td>
+                                            <!-- ສະແດງ Badge ບອກສະຖານະໃຫ້ແຍກກັນຊັດເຈນ -->
+                                            <span th:text="${tx.transactionType}"
+                                                  th:class="${tx.transactionType == 'DEPOSIT' || tx.transactionType == 'TRANSFER_IN' ? 'badge bg-success px-2 py-1' : 'badge bg-danger px-2 py-1'}">
+                                            </span>
+                                        </td>
+                                        <!-- ໃສ່ສີຕົວໜັງສືເງິນໃຫ້ເໝາະສົມ -->
+                                        <td class="fw-bold"
+                                            th:text="${tx.transactionType == 'DEPOSIT' || tx.transactionType == 'TRANSFER_IN' ? '+' : '-'} + ${#numbers.formatDecimal(tx.amount, 1, 'COMMA', 2, 'POINT')} + ' ₭'"
+                                            th:classappend="${tx.transactionType == 'DEPOSIT' || tx.transactionType == 'TRANSFER_IN' ? 'text-success' : 'text-danger'}">
+                                        </td>
+                                        <td class="text-secondary fw-semibold" th:text="${tx.description}"></td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(transactions)}">
+                                        <td colspan="3" class="text-center py-5 text-muted font-italic">
+                                            <i class="bi bi-inbox fs-2 d-block mb-2 text-black-50"></i>ຍັງບໍ່ມີປະຫວັດທຸລະກຳ
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
