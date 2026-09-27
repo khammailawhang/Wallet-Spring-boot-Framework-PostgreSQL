@@ -1,70 +1,82 @@
-# 🚀 Spring Boot Core Wallet API & Full-stack UI v1.1
+# 🚀 Spring Boot & React Decoupled E-Wallet System v2.0
 
-ລະບົບຈຳລອງກະເປົາເງິນອິເລັກທຣອນິກ (Core Wallet System) ພັດທະນາດ້ວຍ Spring Boot ແລະ ເຊື່ອມຕໍ່ຖານຂໍ້ມູນ PostgreSQL ແບບມີສະຖຽນລະພາບ ແລະ ຄວາມປອດໄພສູງ ຕາມຫຼັກການ RESTful APIs [໑] ພ້ອມທັງມີໜ້າຕາເວັບ (Frontend UI) ໃນຕົວແບບ Monolithic Architecture.
+ລະບົບຈຳລອງກະເປົາເງິນອິເລັກທຣອນິກ (Core Wallet System) ທີ່ຖືກອອກແບບດ້ວຍໂຄງສ້າງແຍກສ່ວນ (**Decoupled Architecture / Monorepo**) [໑]. ໂດຍຝັ່ງ Backend ພັດທະນາດ້ວຍ **Spring Boot (RESTful APIs)** ເຊື່ອມຕໍ່ຖານຂໍ້ມູນ **PostgreSQL** ແບບມີສະຖຽນລະພາບ [໑], ແລະ ຝັ່ງ Frontend ພັດທະນາດ້ວຍ **React (Vite) + Tailwind CSS** ລະດັບພຣີມ່ຽມ ພ້ອມລະບົບຄວາມປອດໄພໃນການເຂົ້າລະຫັດຜ່ານ.
 
 ---
 
 ## 🛠️ ຟີເຈີຫຼັກຂອງລະບົບ (Core Features)
 
-### 1. 🔍 ກວດສອບຍອດເງິນ (Check Balance)
-ລະບົບສາມາດກວດສອບຍອດເງິນຫຼ້າສຸດຂອງຜູ້ໃຊ້ ໂດຍດຶງຂໍ້ມູນຈິງຈາກຖານຂໍ້ມູນ PostgreSQL ແບບ Real-time [໑].
+### 1. 🔐 ລະບົບ Login ແທ້ຜ່ານ PostgreSQL (Secure Authentication) — *New!*
+ລະບົບເຂົ້າສູ່ລະບົບຈິງ ໂດຍມີການກວດສອບ User ID ແລະ ລະຫັດຜ່ານ ດຶງຂໍ້ມູນຈິງຈາກຖານຂໍ້ມູນ PostgreSQL [໑]. ລະບົບມີຄວາມປອດໄພສູງ ໂດຍການນຳໃຊ້ **BCrypt Password Hashing** ໃນການເຂົ້າລະຫັດຜ່ານ ຫາກກອກລະຫັດຜິດ ລະບົບຈະແຈ້ງເຕືອນທັນທີ. *(ລະຫັດຜ່ານເລີ່ມຕົ້ນສໍາລັບການໃຊ້ງານຄັ້ງທໍາອິດແມ່ນ `123456`)*.
 
-### 2. 💵 ຝາກເງິນ/ເຕີມເງິນ (Deposit)
-ລະບົບຮອງຮັບການຝາກເງິນ ຫຼື ເຕີມເງິນເຂົ້າກະເປົາເງິນຂອງຕົນເອງ ພ້ອມທັງບັນທຶກປະຫວັດການເຮັດທຸລະກຳລົງໃນລະບົບອັດຕະໂນມັດ.
+### 2. 🔍 ກວດສອບຍອດເງິນ (Check Balance)
+ລະບົບສາມາດກວດສອບຍອດເງິນຫຼ້າສຸດຂອງຜູ້ໃຊ້ທີ່ເຂົ້າສູ່ລະບົບ (Session) ໂດຍດຶງຂໍ້ມູນຈິງຈາກຖານຂໍ້ມູນ PostgreSQL ແບບ Real-time [໑].
 
-### 3. 💸 ໂອນເງິນແບບປອດໄພ (Secure Transfer)
-ລະບົບໂອນເງິນລະຫວ່າງບຸກຄົນ ພ້ອມກົນໄກຄວາມປອດໄພສູງ ຫາກມີຂັ້ນຕອນໃດໜຶ່ງຜິດພາດ ລະບົບຈະດຶງເງິນຄືນ (Rollback / `@Transactional`) ທັນທີ ເພື່ອປ້ອງກັນຂໍ້ມູນເສຍຫາຍ.
+### 3. 💵 ຝາກເງິນ/ເຕີມເງິນ (Deposit)
+ລະບົບຮອງຮັບການຝາກເງິນເຂົ້າກະເປົາເງິນຂອງຕົນເອງ ຜ່ານການສົ່ງຂໍ້ມູນແບບ Form Parameter ໄປປະມວນຜົນ ພ້ອມບັນທຶກປະຫວັດລົງ Ledger ອັດຕະໂນມັດ.
 
-### 4. 📊 ປະຫວັດການເຮັດທຸລະກຳ (Transaction History)
-ລະບົບສາມາດດຶງປະຫວັດການເຮັດທຸລະກຳການເງິນ (Ledger History) ທັງໝົດຂອງຜູ້ໃຊ້ອອກມາສະແດງ ໂດຍຮຽງລຳດັບຈາກລາຍການໃໝ່ລົງໄປຫາລາຍການເກົ່າ [໑].
+### 4. 💸 ໂอนເງິນແບບປອດໄພ (Secure Transfer)
+ລະບົບໂອນເງິນລະຫວ່າງບຸກຄົນ (Peer-to-Peer) ພ້ອມກົນໄກຄວາມປອດໄພສູງ ຫາກມີຂັ້ນຕອນໃດໜຶ່ງຜິດພາດ ລະບົບຈະດຶງເງິນຄືນ (**Rollback / `@Transactional`**) ທັນທີ ເພື່ອປ້ອງກັນຂໍ້ມູນເສຍຫາຍ.
 
-### 🎨 5. 💻 ໜ້າຕາເວັບປະມວນຜົນລວມ (Full-stack UI Dashboard) — *New!*
-ລະບົບຮວບຮວມເອົາ Frontend ມາໄວ້ໃນ Project ດຽວກັນ ໂດຍໃຊ້ **Thymeleaf Template Engine** ຮ່ວມກັບ **Bootstrap 5** ແລະ **Bootstrap Icons** ເຮັດໃຫ້ຜູ້ໃຊ້ສາມາດກວດສອບຍອດເງິນ, ຝາກເງິນ, ໂອນເງິນ ແລະ ເບິ່ງປະຫວັດທຸລະກຳທີ່ມີການແຍກສີແຖວ (ເງິນເຂົ້າສີຂຽວ 🟢 / ເງິນອອກສີແດງ 🔴) ໄດ້ຢ່າງຊັດເຈນຜ່ານ Web Browser ໂດຍກົງ.
+### 5. 📊 ປະຫວັດການເຮັດທຸລະກຳ (Transaction History)
+ດຶງປະຫວັດການເງິນ (Ledger History) ທັງໝົດອອກມາສະແດງໃນຮູບແບບຕາຕະລາງ ໂດຍຮຽງລຳດັບຈາກລາຍການໃໝ່ລົງໄປຫາລາຍການເກົ່າ [໑]. ພ້ອມທັງມີການໄຮໄລ້ແຍກສີແຖວຢ່າງສວຍງາມ (ເງິນເຂົ້າສີຂຽວ 🟢 / ເງິນອອກສີແດງ 🔴).
+
+---
+
+## 📂 ໂຄງສ້າງໂຟນເດີໂຄງການ (Monorepo Folder Structure)
+ໂຄງການນີ້ຖືກຈັດລະບຽບແບບ Monorepo ເພື່ອແຍກ Frontend ແລະ Backend ອອກຈາກກັນຢ່າງຊັດເຈນ [໑]:
+```text
+D:\Wallet API\ (Root Folder)
+ ├── wallet-backend/           <-- ☕ ຝັ່ງ Backend (Spring Boot Core API)
+ │    ├── src/
+ │    └── pom.xml
+ ├── wallet-frontend/          <-- ⚛️ ຝັ່ງ Frontend (React SPA + Tailwind CSS)
+ │    ├── src/
+ │    └── package.json
+ └── README.md                 <-- 📄 ໄຟລ໌ອະທິບາຍໂຄງການລວມ
+```
 
 ---
 
 ## 🗄️ ໂຄງສ້າງຖານຂໍ້ມູນ (Database Schema)
-ໂຄງສ້າງຕາຕະລາງໃນ PostgreSQL ທີ່ໃຊ້ງານໃນລະບົບ ແບ່ງອອກເປັນ 3 ຕາຕະລາງຫຼັກດັ່ງນີ້:
-
-1. **ຕາຕະລາງເກັບຂໍ້ມູນຜູ້ໃຊ້ (Users Table)**
-    * *ສ້າງໂດຍນັກພັດທະນາ (Manual):* ເຮັດໜ້າທີ່ເກັບຂໍ້ມູນພື້ນຖານຂອງຜູ້ໃຊ້ ເຊັ່ນ: ໄອດີຜູ້ໃຊ້ (`user_id`), ຊື່ຜູ້ໃຊ້ (`username`), ແລະ ອີເມວ (`email`) ເພື່ອໃຊ້ເປັນຫຼັກໃນການຜູກກວດສອບຕົວຕົນ.
-2. **ຕາຕະລາງເກັບຍອດເງິນ (Wallets Table)**
-    * *ສ້າງອັດຕະໂນມັດຜ່ານ Hibernate:* ເຮັດໜ້າທີ່ເກັບຂໍ້ມູນໄອດີກະເປົາເງິນ, ໄອດີຜູ້ໃຊ້, ຍອດເງິນຄົງເຫຼືອ (`balance`) ໂດຍໃຊ້ປະເພດ `BigDecimal` ເພື່ອປ້ອງກັນທົດສະນິຍົມຄາດເຄື່ອນໃນລະບົບການເງິນ.
-3. **ຕາຕະລາງເກັບປະຫວັດ (Wallet Transactions Table)**
-    * *ສ້າງອັດຕະໂນມັດຜ່ານ Hibernate:* ເຮັດໜ້າທີ່ເກັບປະຫວັດລາຍການເງິນເຂົ້າ-ອອກທັງໝົດ ໂດຍບັນທຶກໄອດີປະຫວັດ, ປະເພດທຸລະກຳ (`DEPOSIT`, `TRANSFER_IN`, `TRANSFER_OUT`), ຈຳນວນເງິນ, ລາຍລະອຽດ, ວັນທີ ແລະ ເວລາຈິງ (`created_at`) ທີ່ເກີດທຸລະກຳ.
+ໂຄງສ້າງຕາຕະລາງໃນ PostgreSQL ທີ່ສ້າງ ແລະ ຄວບຄຸມອັດຕະໂນມັດຜ່ານ **Hibernate (JPA)**:
+1. **ຕາຕະລາງ Wallets Table (`wallets`):** ເກັບຂໍ້ມູນ `wallet_id`, `user_id`, ຍອດເງິນຄົງເຫຼືອ (`balance` ປະເພດ `BigDecimal` ເພື່ອປ້ອງກັນທົດສະນິຍົມຄາດເຄື່ອນ) ແລະ ລະຫັດຜ່ານທີ່ຖືກ Hash ດ້ວຍ BCrypt (`password`).
+2. **ຕາຕະລາງ Wallet Transactions Table (`wallet_transactions`):** ເກັບປະຫວັດລາຍການເງິນເຂົ້າ-ອອກທັງໝົດ ໂດຍບັນທຶກປະເພດທຸລະກຳ (`DEPOSIT`, `TRANSFER_IN`, `TRANSFER_OUT`), ຈຳນວນເງິນ, ລາຍລະອຽດ, ວັນທີ ແລະ ເວລາຈິງ (`created_at`).
 
 ---
 
-## 🔌 ເເສັ້ນທາງການເຊື່ອມຕໍ່ API & Web Endpoints
+## 🔌 ເສັ້ນທາງການເຊື່ອມຕໍ່ APIs (Endpoints)
 
-### 🌐 ຝັ່ງໜ້າເວັບ UI (Web Interface Route)
-* 💻 **GET:** `/wallet` — ໜ້າຫຼັກ Dashboard ສໍາລັບເຮັດທຸລະກຳຝາກ-ໂອນ ແລະ ເບິ່ງລາຍການ Ledger ຜ່ານ Browser (`http://localhost:8080/wallet`).
-* 📥 **POST:** `/wallet/web-deposit` — ຮັບຂໍ້ມູນຈາກຟອມ HTML ເພື່ອສົ່ງໄປປະມວນຜົນຝາກເງິນ.
-* 📤 **POST:** `/wallet/web-transfer` — ຮັບຂໍ້ມູນຈາກຟອມ HTML ເພື່ອສົ່ງໄປປະມວນຜົນໂອນເງິນ.
-
-### 🧪 ຝັ່ງ Backend REST APIs (ຮູບແບບ JSON)
-* 🔍 **GET:** `/api/wallet/{userId}` — ສຳລັບກວດສອບຍອດເງິນ [໑].
-* 💵 **POST:** `/api/wallet/deposit` — ສຳລັບຝາກເງິນ/ເຕີມເງິນ.
-* 💸 **POST:** `/api/wallet/transfer` — ສຳລັບໂອນເງິນແບບປອດໄພ.
-* 📊 **GET:** `/api/wallet/{userId}/transactions` — ສຳລັບດຶງປະຫວັດການເງິນ [໑].
+ລະບົບ Backend ເປີດຮອງຮັບ **CORS (`@CrossOrigin`)** ເພື່ອໃຫ້ຝັ່ງ Frontend ເຂົ້າເຖິງຂໍ້ມູນໄດ້:
+* 🔐 **POST:** `/api/wallet/login` — ສຳລັບກວດສອບການເຂົ້າສູ່ລະບົບ (ຮັບ JSON Body).
+* 🔍 **GET:** `/api/wallet/{userId}` — ສຳລັບກວດສອບຍອດເງິນຫຼ້າສຸດ [໑].
+* 💵 **POST:** `/api/wallet/deposit` — ສຳລັບຝາກເງິນ/ເຕີມເງິນ (ຮັບ Form Parameter).
+* 💸 **POST:** `/api/wallet/transfer` — ສຳລັບໂອນເງິນລະຫວ່າງບັນຊີ (ຮັບ Form Parameter).
+* 📊 **GET:** `/api/wallet/{userId}/transactions` — ສຳລັບດຶງປະຫວັດການເງິນທັງໝົດ [໑].
 
 ---
 
 ## 🔒 ລະບົບຄວາມປອດໄພຂອງ Config (Secrets Management)
-ໂຄງການນີ້ມີການນຳໃຊ້ຕົວແປສະພາບແວດລ້ອມ ພາຍໃຕ້ການຄວບຄຸມຂອງໄຟລ໌ `.gitignore` ເພື່ອປົກປ້ອງຄວາມລັບຂອງລະບົບ:
-* ໄຟລ໌ຕັ້ງຄ່າຫຼັກຖືກໃສ່ໄວ້ໃນ `.gitignore` ເພື່ອປ້ອງກັນບໍ່ໃຫ້ລະຫັດຜ່ານຖານຂໍ້ມູນຮົ່ວໄຫຼຂຶ້ນ GitHub [໑].
-* ລະຫັດຜ່ານຖານຂໍ້ມູນຖືກເອີ້ນໃຊ້ຜ່ານຕົວແປລະບົບ (Environment Variables) ເຮັດໃຫ້ໂໂຄ້ດປອດໄພ ແລະ ຍ້າຍ Server ໄດ້ງ່າຍ [໑].
+* ໄຟລ໌ຕັ້ງຄ່າຫຼັກ ແລະ ໂຟນເດີຂີ້ເຫຍື້ອ ເຊັ່ນ `node_modules/`, `target/` ແລະ `.idea/` ຖືກໃສ່ໄວ້ໃນ `.gitignore` ຫຼັກຢ່າງຮຽບຮ້ອຍ ເພື່ອປ້ອງກັນບໍ່ໃຫ້ຂໍ້ມູນລະຫັດຜ່ານຖານຂໍ້ມູນ ແລະ ໄຟລ໌ລະບົບຮົ່ວໄຫຼຂຶ້ນ GitHub [໑].
+* ລະຫັດຜ່ານຖານຂໍ້ມູນຖືກເອີ້ນໃຊ້ຜ່ານຕົວແປລະບົບ (Environment Variables) ເຮັດໃຫ້ໂຄ້ດປອດໄພ ແລະ ຍ້າຍ Server ໄດ້ງ່າຍ [໑].
 
 ---
 
 ## 🚀 ວິທີການ Run ໂຄງການ (How to Run)
 
-1. **ຂັ້ນຕອນທີ 1:** ສ້າງ Database ຫວ່າງເປົ່າໃນ PostgreSQL ໃຫ້ຮຽບຮ້ອຍ.
-2. **ຂັ້ນຕອນທີ 2:** ຕັ້ງຄ່າ Environment Variable ລະຫັດຜ່ານ Database ຢູ່ໃນ IDE ຂອງເຈົ້າ.
-3. **ຂັ້ນຕອນທີ 3:** ດາວໂຫຼດ Dependencies ແລະ Run ໂຄງການ Spring Boot ຜ່ານ Terminal:
-   ```bash
-   ./mvnw clean spring-boot:run
-   ```
-4. **ຂັ້ນຕອນທີ 4:** ເປີດໃຊ້ງານ:
-    * ເຂົ້າໃຊ້ງານຜ່ານໜ້າເວັບ UI: ເປີດ Browser ແລ້ວໄປທີ່ `http://localhost:8080/wallet`
-    * ທົດສອບ API: ເປີດໂປຣແກຣມ Postman ເພື່ອຍິງທົດສອບ REST API ຕາມເສັ້ນທາງ Endpoints ທີ່ກຳນົດໄວ້.
+### 1. ☕ ວິທີ Run ຝັ່ງ Backend (Spring Boot)
+ເປີດ Terminal ທີ 1 ແລ້ວເຂົ້າໄປທີ່ໂຟນເດີ Backend:
+```bash
+cd wallet-backend
+./mvnw clean spring-boot:run
+```
+*(Backend ຈະເຮັດວຽກຢູ່ພອດ `http://localhost:8080`)*
+
+### 2. ⚛️ ວິທີ Run ຝັ່ງ Frontend (React)
+ເປີດ Terminal ທີ 2 ແລ້ວເຂົ້າໄປທີ່ໂຟນເດີ Frontend:
+```bash
+cd wallet-frontend
+npm install
+npm run dev
+```
+*(Frontend ຈະເຮັດວຽກຢູ່ພອດ `http://localhost:5173`)*
