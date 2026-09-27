@@ -8,6 +8,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/wallet")
+@CrossOrigin(origins = "*") // 🌟 ເພີ່ມແຖວນີ້ເພື່ອໃຫ້ Frontend (React) ສາມາດເອີ້ນໃຊ້ API ໄດ້ຈາກທຸກບ່ອນ
 public class WalletController {
 
     @Autowired
