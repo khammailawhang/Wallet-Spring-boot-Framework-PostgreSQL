@@ -1,0 +1,31 @@
+# =================================================================
+# ⚛️ Frontend (React / Vite) Ignore Rules
+# =================================================================
+**/wallet-frontend/node_modules/
+**/wallet-frontend/dist/
+**/wallet-frontend/dist-ssr/
+**/wallet-frontend/*.local
+**/wallet-frontend/.env*.local
+
+# =================================================================
+# ☕ Backend (Spring Boot / Maven) Ignore Rules
+# =================================================================
+**/wallet-backend/target/
+**/wallet-backend/.mvn/
+**/wallet-backend/mvnw
+**/wallet-backend/mvnw.cmd
+**/wallet-backend/.ext/
+
+# =================================================================
+# 💻 IDEs & System Garbage (VS Code, IntelliJ, OS)
+# =================================================================
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+Thumbs.db
+*.log
