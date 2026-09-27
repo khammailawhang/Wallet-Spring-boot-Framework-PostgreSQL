@@ -15,7 +15,7 @@
 ### 3. 💵 ຝາກເງິນ/ເຕີມເງິນ (Deposit)
 ລະບົບຮອງຮັບການຝາກເງິນເຂົ້າກະເປົາເງິນຂອງຕົນເອງ ຜ່ານການສົ່ງຂໍ້ມູນແບບ Form Parameter ໄປປະມວນຜົນ ພ້ອມບັນທຶກປະຫວັດລົງ Ledger ອັດຕະໂນມັດ.
 
-### 4. 💸 ໂอนເງິນແບບປອດໄພ (Secure Transfer)
+### 4. 💸 ໂອນເງິນແບບປອດໄພ (Secure Transfer)
 ລະບົບໂອນເງິນລະຫວ່າງບຸກຄົນ (Peer-to-Peer) ພ້ອມກົນໄກຄວາມປອດໄພສູງ ຫາກມີຂັ້ນຕອນໃດໜຶ່ງຜິດພາດ ລະບົບຈະດຶງເງິນຄືນ (**Rollback / `@Transactional`**) ທັນທີ ເພື່ອປ້ອງກັນຂໍ້ມູນເສຍຫາຍ.
 
 ### 5. 📊 ປະຫວັດການເຮັດທຸລະກຳ (Transaction History)
@@ -61,22 +61,3 @@ D:\Wallet API\ (Root Folder)
 * ລະຫັດຜ່ານຖານຂໍ້ມູນຖືກເອີ້ນໃຊ້ຜ່ານຕົວແປລະບົບ (Environment Variables) ເຮັດໃຫ້ໂຄ້ດປອດໄພ ແລະ ຍ້າຍ Server ໄດ້ງ່າຍ [໑].
 
 ---
-
-## 🚀 ວິທີການ Run ໂຄງການ (How to Run)
-
-### 1. ☕ ວິທີ Run ຝັ່ງ Backend (Spring Boot)
-ເປີດ Terminal ທີ 1 ແລ້ວເຂົ້າໄປທີ່ໂຟນເດີ Backend:
-```bash
-cd wallet-backend
-./mvnw clean spring-boot:run
-```
-*(Backend ຈະເຮັດວຽກຢູ່ພອດ `http://localhost:8080`)*
-
-### 2. ⚛️ ວິທີ Run ຝັ່ງ Frontend (React)
-ເປີດ Terminal ທີ 2 ແລ້ວເຂົ້າໄປທີ່ໂຟນເດີ Frontend:
-```bash
-cd wallet-frontend
-npm install
-npm run dev
-```
-*(Frontend ຈະເຮັດວຽກຢູ່ພອດ `http://localhost:5173`)*
